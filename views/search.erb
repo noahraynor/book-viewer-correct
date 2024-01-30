@@ -1,0 +1,28 @@
+<h2 class="content-subhead">Search</h2>
+
+<form action="/search" method="get">
+  <input name="query" value="<%= params[:query] %>">
+  <button type="submit">Search</button>
+</form>
+
+<% if params[:query] != "" && params[:query] != nil %>
+    <% hash = searching(params[:query]) %>
+    <% if hash.empty? %>
+      <br>
+      <div>Sorry, no matches were found</div>
+    <% else %>
+      <ul>
+        <% hash.each do |chap_num, paragraphs| %>
+          <li><%= @contents[chap_num-1] %>
+            <ul>
+              <% paragraphs.each do |par_array| %>
+                <li><a href="/chapters/<%= chap_num %>#paragraph<%= par_array[1] %>"><%= strongify(par_array[0], params[:query]) %></a></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+<% end %>
+
+
